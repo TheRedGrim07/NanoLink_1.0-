@@ -105,52 +105,65 @@ pip install -r requirements.txt
 
 # Run the application
 python app.py
+```
+
 Server will be available at:
-
-cpp
-Copy code
+```bash
 http://127.0.0.1:5000
-📡 API Documentation
-Endpoints
-Method	Endpoint	Description
-POST	/shorten	Generate a short URL
-GET	/<short_id>	Redirect to the original URL
+```
 
-Example Request
-POST /shorten
 
-json
-Copy code
+## 📡 API Documentation
+
+### Endpoints
+
+| Method | Endpoint      | Description                    |
+|--------|---------------|--------------------------------|
+| POST   | `/shorten`    | Generate a short URL           |
+| GET    | `/<short_id>` | Redirect to the original URL   |
+
+### Example Request
+
+**POST `/shorten`**
+
+```json
 {
   "url": "https://example.com/very/long/url"
 }
-Response
+```
 
-json
-Copy code
+**Response**
+```json
 {
-  "short_url": "http://localhost:5000/aZ3k"
+   "short_url": "http://localhost:5000/aZ3k"
 }
-🔐 Validation & Error Handling
-URL format validation before storage
+```
 
-Graceful handling of invalid short IDs
+## 🔐 Validation & Error Handling
 
-Controlled HTTP redirects using status code 302
+- URL format validation before storage
+- Graceful handling of invalid short IDs
+- Controlled HTTP redirects using HTTP status code **302**
 
-📈 Scalability Considerations
+---
+
+## 📈 Scalability Considerations
+
 NanoLink’s architecture supports future enhancements such as:
 
-Migration to PostgreSQL or MySQL
+- Migration to PostgreSQL or MySQL
+- Horizontal scaling with stateless Flask services
+- Caching using Redis for hot URLs
+- Click analytics and rate limiting
 
-Horizontal scaling with stateless Flask services
+---
 
-Caching using Redis for hot URLs
+## 📄 License
 
-Click analytics and rate limiting
+This project is licensed under the **MIT License**.
 
-📄 License
-This project is licensed under the MIT License.
+---
 
-👤 Author
-Built with a focus on backend engineering excellence, system design clarity, and production readiness.
+## 👤 Author
+
+Built with a focus on **backend engineering excellence**, **system design clarity**, and **production readiness**.
