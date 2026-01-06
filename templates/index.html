@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NanoLink | Shorten URLs Fast</title>
+    <style>
+        /* Modern Reset & Base Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* The Card Container */
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        h1 { margin-bottom: 0.5rem; color: #111; font-weight: 700; }
+        p.subtitle { color: #666; margin-bottom: 2rem; font-size: 0.95rem; }
+
+        /* Form Elements */
+        input[type="url"], input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 1rem;
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #007bff; outline: none; }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #0056b3; }
+
+        /* Result Section */
+        .result {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+            animation: fadeIn 0.5s ease;
+        }
+        .short-link-box {
+            background: #f8f9fa;
+            border: 1px dashed #ccc;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            color: #007bff;
+            font-size: 1.1rem;
+        }
+        a.reset { color: #666; text-decoration: none; font-size: 0.9rem; }
+        a.reset:hover { text-decoration: underline; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔗 NanoLink</h1>
+        <p class="subtitle">Small links. Big reach.</p>
+        
+        {% if short_url %}
+            <div class="result">
+                <p>Your Link is Ready:</p>
+                <div class="short-link-box">{{ short_url }}</div>
+                <button onclick="navigator.clipboard.writeText('{{ short_url }}'); this.innerText='Copied!'" style="background:#28a745; margin-bottom:15px;">Copy to Clipboard</button>
+                <br>
+                <a href="/" class="reset">Shorten another link</a>
+            </div>
+        {% else %}
+            <form method="POST">
+                <input type="url" name="url" placeholder="Paste your long URL here..." required autocomplete="off">
+                <button type="submit">Shorten URL</button>
+            </form>
+        {% endif %}
+    </div>
+
+</body>
+</html>

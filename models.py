@@ -27,5 +27,16 @@ class Link(db.Model):
             id_num,rem=divmod(id_num,base)
             arr.append(characters[rem])
         arr.reverse()
-
         return ''.join(arr)
+    
+    @staticmethod
+    def decode_id(short_link):
+        characters=string.digits+string.ascii_letters
+        base=62
+        num=0
+        for char in short_link:
+            if char not in characters:
+                return None
+            num=base*num+characters.index(char)
+        
+        return num

@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 from models import db,Link
 
 app=Flask(__name__)
@@ -17,37 +17,37 @@ def Index():
 
     if request.method=='POST':
         original_url=request.form.get('url')
-        new_link=Link(original_url=original_url)
+        existing_link=Link.query.filter_by(original_url=original_url).first()
 
-        db.session.add(new_link)
-        db.session.commit()
+        if existing_link:
+            short_link=existing_link.generate_short_id()
+        else:
+            new_link=Link(original_url=original_url)
 
-        short_link=new_link.generate_short_id()
+            db.session.add(new_link)
+            db.session.commit()
+
+            short_link=new_link.generate_short_id() 
+
         full_short_link=request.host_url+short_link
 
-        return f"""
-        <h1>🚀 Link Shortened!</h1>
-        <p>Short Link: <a href="{full_short_link}">{full_short_link}</a></p>
-        <a href="/">Shorten Another</a>
-        """
+        return render_template('index.html', short_url=full_short_link)
     
-    # Show the Input Form (Simple HTML string)
-    return """
-    <h1>🔗 NanoLink</h1>
-    <form method="POST">
-        <input type="url" name="url" placeholder="Paste long URL here..." required>
-        <button type="submit">Shorten</button>
-    </form>
-    """
+    
+    return render_template('index.html')
 
 @app.route('/<short_link>')
 def redirect_to_url(short_link):
 
-    links=Link.query.all()
-    for link in links:
-        if link.generate_short_id()==short_link:
-            return redirect(link.original_url)
+    original_url_id=Link.decode_id(short_link=short_link)
+    if original_url_id is None:
+        return "<h1>404 -Invalid Link</h1>", 404
     
+    link=Link.query.get(original_url_id)
+
+    if link:
+        return redirect(link.original_url)
+            
     return "<h1>404 - Link Not Found</h1>", 404
 
 if __name__=='__main__':
